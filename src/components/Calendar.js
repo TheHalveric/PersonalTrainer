@@ -9,60 +9,60 @@ import enUS from 'date-fns/locale/en-US'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import axiosService from '../services/httpHelper'
 
-const TrainingCalendar = props => {
-  const [agenda, setAgenda] = useState([])
+const TrainingCalendar = () => {
+	const [agenda, setAgenda] = useState([])
 
-  const trainingListUrl = 'https://customerrest.herokuapp.com/gettrainings'
-  const locales = {
-    'en-US': enUS,
-  }
-  const localizer = dateFnsLocalizer({
-    format,
-    parseISO,
-    startOfWeek,
-    getDay,
-    locales,
-  })
+	const trainingListUrl = 'https://customerrest.herokuapp.com/gettrainings'
+	const locales = {
+		'en-US': enUS,
+	}
+	const localizer = dateFnsLocalizer({
+		format,
+		parseISO,
+		startOfWeek,
+		getDay,
+		locales,
+	})
 
-  useEffect(() => {
-    fetchTrainings()
-  }, [])
+	useEffect(() => {
+		fetchTrainings()
+	}, [])
 
-  const fetchTrainings = () => {
-    axiosService
-      .getAll(trainingListUrl)
-      .then(response => response.data)
-      .then(trainings => {
-        return (
-          setAgenda(
-            trainings.map((training, index) => ({
-              id: index,
-              title: training.activity + " with " + training.customer.lastname + ", " + training.customer.firstname,
-              start: parseISO(training.date),
-              end: addMinutes((new Date(training.date)), training.duration)
-            }))
-          )
-        )
+	const fetchTrainings = () => {
+		axiosService
+			.getAll(trainingListUrl)
+			.then(response => response.data)
+			.then(trainings => {
+				return (
+					setAgenda(
+						trainings.map((training, index) => ({
+							id: index,
+							title: training.activity + ' with ' + training.customer.lastname + ', ' + training.customer.firstname,
+							start: parseISO(training.date),
+							end: addMinutes((new Date(training.date)), training.duration)
+						}))
+					)
+				)
 
-      })
-      .catch(err => console.log(err));
-  }
-  console.log(agenda)
+			})
+			.catch(err => console.log(err))
+	}
+	console.log(agenda)
 
-  return (
-    <div>
-      <Calendar
-        localizer={localizer}
-        events={agenda}
-        startAccessor="start"
-        endAccessor="end"
-        style={{ height: '90vh' }}
-        defaultDate={new Date()}
-        defaultView='month'
+	return (
+		<div>
+			<Calendar
+				localizer={localizer}
+				events={agenda}
+				startAccessor="start"
+				endAccessor="end"
+				style={{ height: '90vh' }}
+				defaultDate={new Date()}
+				defaultView='month'
         
-      />
-    </div>
-  )
+			/>
+		</div>
+	)
 }
 
 
