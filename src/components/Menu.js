@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 import React, { useState } from 'react'
 import CustomerList from './CustomerList'
 import TrainingList from './TrainingList'
